@@ -4,4 +4,5 @@ class Membership < ApplicationRecord
   belongs_to :user
 
   validates :user, uniqueness: { scope: :group }
+  validates :group, uniqueness: { scope: :user }
 end

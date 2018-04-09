@@ -1,6 +1,7 @@
 # Expense table
 class Expense < ApplicationRecord
   belongs_to :group
+  has_many :users, through: :user_expenses
 
   validates :date, :who_paid, presence: true
   validates :description, presence: true, uniqueness: { scope: :group }
