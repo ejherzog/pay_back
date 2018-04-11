@@ -1,5 +1,7 @@
 # User table
 class User < ApplicationRecord
+  has_many :memberships, dependent: :destroy
+  has_many :user_expenses, dependent: :destroy
   has_many :groups, through: :memberships
   has_many :expenses, through: :user_expenses
 
