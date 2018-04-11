@@ -1,13 +1,14 @@
-# User table
 class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
-  has_many :user_expenses, dependent: :destroy
   has_many :groups, through: :memberships
-  has_many :expenses, through: :user_expenses
+
+  has_many :payments, dependent: :destroy
+  has_many :expenses, through: :payments
 
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }
   validates :first_name, :last_name, presence: true
+
   validate :valid_email
 
   def valid_email

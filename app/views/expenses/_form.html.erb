@@ -12,23 +12,28 @@
   <% end %>
 
   <div class="field">
+    <%= form.label :date %>
+    <%= form.date_select :date, id: :expense_date %>
+  </div>
+
+  <div class="field">
     <%= form.label :total %>
     <%= form.text_field :total, id: :expense_total %>
   </div>
 
   <div class="field">
     <%= form.label :description %>
-    <%= form.text_area :description, id: :expense_description %>
+    <%= form.text_field :description, id: :expense_description %>
   </div>
 
   <div class="field">
-    <%= form.label :date %>
-    <%= form.date_select :date, id: :expense_date %>
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, id: :expense_user_id %>
   </div>
 
   <div class="field">
-    <%= form.label :who_paid_id %>
-    <%= form.text_field :who_paid_id, id: :expense_who_paid_id %>
+    <%= form.label :group_id %>
+    <%= form.text_field :group_id, id: :expense_group_id %>
   </div>
 
   <div class="field">

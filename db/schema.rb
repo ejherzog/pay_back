@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410161318) do
+ActiveRecord::Schema.define(version: 20180411142356) do
 
   create_table "expenses", force: :cascade do |t|
-    t.float "total"
-    t.text "description"
     t.date "date"
+    t.float "total"
+    t.string "description"
     t.integer "user_id"
     t.integer "group_id"
     t.string "category"
@@ -32,22 +32,22 @@ ActiveRecord::Schema.define(version: 20180410161318) do
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.integer "group_id"
     t.integer "user_id"
+    t.integer "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_memberships_on_group_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
-  create_table "user_expenses", force: :cascade do |t|
+  create_table "payments", force: :cascade do |t|
     t.integer "user_id"
     t.integer "expense_id"
     t.boolean "paid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["expense_id"], name: "index_user_expenses_on_expense_id"
-    t.index ["user_id"], name: "index_user_expenses_on_user_id"
+    t.index ["expense_id"], name: "index_payments_on_expense_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

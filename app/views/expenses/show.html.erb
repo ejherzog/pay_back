@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Date:</strong>
+  <%= @expense.date %>
+</p>
+
+<p>
   <strong>Total:</strong>
   <%= @expense.total %>
 </p>
@@ -11,13 +16,13 @@
 </p>
 
 <p>
-  <strong>Date:</strong>
-  <%= @expense.date %>
+  <strong>User:</strong>
+  <%= @expense.user %>
 </p>
 
 <p>
-  <strong>Who paid:</strong>
-  <%= @expense.who_paid %>
+  <strong>Group:</strong>
+  <%= @expense.group %>
 </p>
 
 <p>
