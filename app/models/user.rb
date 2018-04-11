@@ -11,6 +11,13 @@ class User < ApplicationRecord
 
   validate :valid_email
 
+  # add this user to an existing group - update memberships
+  def join_group(group)
+    Membership.create(user: self, group: group)
+  end
+
+  private
+
   def valid_email
     return if email.nil?
     errors.add(:email, "must have an '@' and a '.'") if (!email.include? '.') || (!email.include? '@')
