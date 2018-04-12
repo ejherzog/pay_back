@@ -34,10 +34,7 @@ RSpec.describe Payment, type: :model do
     end
 
     it 'is not valid to add an expense to a user twice' do
-      print(user1.valid?)
-      print(expense2.valid?)
       payment1 = Payment.create(user: user1, expense: expense2, paid: false)
-      print(payment1.valid?)
       payment2 = Payment.create(user: user1, expense: expense2, paid: true)
       expect(payment2.errors.messages[:user]).to include('has already been taken')
     end

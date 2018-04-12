@@ -86,9 +86,6 @@ RSpec.describe Expense, type: :model do
 
   describe '#payments' do
     it 'has many payments' do
-      print(expense1.valid?)
-      print(paymentA.valid?)
-      print(paymentB.valid?)
       expect(expense1.payments.size).to eq(2)
       expect(expense2.payments.size).to eq(2)
     end

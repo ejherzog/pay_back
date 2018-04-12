@@ -53,4 +53,52 @@ RSpec.describe Group, type: :model do
       expect(groupB.users.size).to eq(3)
     end
   end
+
+  describe '#add_user' do
+    it 'creates a new membership record with correct data' do
+      group_c = Group.create(name: 'Bowling Team')
+      new_membership = group_c.add_user(user1)
+      expect(new_membership).not_to be_nil
+      expect(Membership.count).to eq(5)
+      expect(user1.groups).to include(group_c)
+      expect(group_c.users).to include(user1)
+    end
+
+    it 'returns nil and make no modifications if membership already exists' do
+      dup_membership = groupA.add_user(user1)
+      expect(dup_membership).to be_nil
+      expect(Membership.count).to eq(4)
+      expect(user1.groups).to include(groupA)
+      expect(groupA.users).to include(user1)
+    end
+  end
+
+  describe '#add_expense' do
+    it 'adds a new payment record for each user in group' do
+      group_d = Group.create(name: 'Test Group')
+      Membership.create(user: user1, group: group_d)
+      Membership.create(user: user2, group: group_d)
+      Membership.create(user: user3, group: group_d)
+      expense = Expense.create(user: user2, group: group_d, date: '05/06/2018', total: 30.00, description: 'something', category: 'Food & Drink')
+      response = group_d.add_expense(expense)
+      expect(response).not_to be_nil
+      expect(Payment.count).to eq(3)
+      expect(user1.expenses).to include(expense)
+      expect(user2.expenses).to include(expense)
+      expect(user3.expenses).to include(expense)
+      expect(user1.payments.size).to eq(1)
+      expect(user2.payments.size).to eq(1)
+      expect(user3.payments.size).to eq(1)
+    end
+
+    it 'returns nil and makes no modifications if groups do not match' do
+      expense = Expense.create(user: user2, group: groupA, date: '05/06/2018', total: 30.00, description: 'something', category: 'Food & Drink')
+      response = groupB.add_expense(expense)
+      expect(response).to be_nil
+      expect(Payment.count).to eq(0)
+      expect(user1.payments.size).to eq(0)
+      expect(user2.payments.size).to eq(0)
+      expect(user3.payments.size).to eq(0)
+    end
+  end
 end

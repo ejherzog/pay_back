@@ -13,7 +13,8 @@ class User < ApplicationRecord
 
   # add this user to an existing group - update memberships
   def join_group(group)
-    Membership.create(user: self, group: group)
+    membership = Membership.create(user: self, group: group)
+    membership.valid? ? membership : nil
   end
 
   private

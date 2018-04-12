@@ -91,4 +91,23 @@ RSpec.describe User, type: :model do
       expect(user2.groups.size).to eq(1)
     end
   end
+
+  describe '#join_group' do
+    it 'creates a new membership record with correct data' do
+      group_c = Group.create(name: 'Bowling Team')
+      new_membership = user1.join_group(group_c)
+      expect(new_membership).not_to be_nil
+      expect(Membership.count).to eq(5)
+      expect(user1.groups).to include(group_c)
+      expect(group_c.users).to include(user1)
+    end
+
+    it 'returns nil and make no modifications if membership already exists' do
+      dup_membership = user1.join_group(groupA)
+      expect(dup_membership).to be_nil
+      expect(Membership.count).to eq(4)
+      expect(user1.groups).to include(groupA)
+      expect(groupA.users).to include(user1)
+    end
+  end
 end
