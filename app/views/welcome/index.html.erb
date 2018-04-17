@@ -1,0 +1,52 @@
+<% if logged_in? %>
+  <div><h1 class="text-center">Welcome Back, <%= current_user.first_name %>!</h1></div>
+  <br>
+  <div class="row">
+    <div class="col-lg-3">
+      <h2 class="text-center">Groups</h2>
+      <ul class="list-group">
+        <li class="list-group-item">Roommates</li>
+        <li class="list-group-item">Quizzo</li>
+        <li class="list-group-item">Soccer Team</li>
+      </ul>
+    </div>
+
+    <div class="col-lg-8 offset-lg-1">
+      <h2 class="text-center">Expenses</h2>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Expense</th>
+            <th>Total</th>
+            <th>Group</th>
+            <th>Date</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>May Rent</td>
+            <td>$1500.00</td>
+            <td>Roommates</td>
+            <td>05/01/2018</td>
+            <td>Home</td>
+          </tr>
+           <tr>
+            <td>Quizzo - April 17th</td>
+            <td>$87.31</td>
+            <td>Quizzo</td>
+            <td>04/17/2018</td>
+            <td>Food & Drink</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <h1>Welcome to Pay Back!</h1>
+      <p>Sign up or log in to get started!</p>
+    </div>
+  </div>
+<% end %>

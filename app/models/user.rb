@@ -17,6 +17,10 @@ class User < ApplicationRecord
     membership.valid? ? membership : nil
   end
 
+  def full_name
+    first_name + ' ' + last_name
+  end
+
   private
 
   def valid_email

@@ -72,6 +72,14 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#full_name' do
+    it 'returns the full name' do
+      expect(user1.full_name).to eq('User One')
+      expect(user2.full_name).to eq('User Two')
+      expect(user3.full_name).to eq('User Three')
+    end
+  end
+
   describe '#memberships' do
     it 'has many memberships' do
       expect(user1.memberships.size).to eq(2)
