@@ -1,5 +1,3 @@
-<h1>New Group</h1>
+<h2 class="text-center">Name Your New Group</h2>
 
-<%= render 'form', group: @group %>
-
-<%= link_to 'Back', groups_path %>
+<%= render 'form', group: @group, locals: { myclass: 'form-horizontal' } %>

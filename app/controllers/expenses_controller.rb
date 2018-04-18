@@ -14,7 +14,10 @@ class ExpensesController < ApplicationController
 
   # GET /expenses/new
   def new
-    @expense = Expense.new
+    return unless params[:group_id]
+    @group = Group.find(params[:group_id])
+    @users = @group.users
+    @expense = Expense.new(group_id: @group.id)
   end
 
   # GET /expenses/1/edit
@@ -31,7 +34,7 @@ class ExpensesController < ApplicationController
         format.html { redirect_to @expense, notice: 'Expense was successfully created.' }
         format.json { render :show, status: :created, location: @expense }
       else
-        format.html { render :new }
+        format.html { render controller: 'expenses', action: 'new', group_id: expense_params[:group_id] }
         format.json { render json: @expense.errors, status: :unprocessable_entity }
       end
     end

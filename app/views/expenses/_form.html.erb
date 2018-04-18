@@ -1,4 +1,4 @@
-<%= form_with(model: expense, local: true) do |form| %>
+<%= form_with(model: expense, local: true, :class => 'form p-3') do |form| %>
   <% if expense.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
@@ -10,38 +10,35 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :date %>
+<div class="col-lg-6 offset-lg-3">
+  <div class="form-group text-center">
+    <strong><%= form.label :date %>:</strong>
     <%= form.date_select :date, id: :expense_date %>
   </div>
 
-  <div class="field">
-    <%= form.label :total %>
-    <%= form.text_field :total, id: :expense_total %>
+  <div class="form-group">
+    <strong><%= form.label :total %>:</strong>
+    <%= form.number_field :total, id: :expense_total, :value => (number_to_currency(form.object.total, :precision => 2)) %>
   </div>
 
-  <div class="field">
-    <%= form.label :description %>
+  <div class="form-group">
+    <strong><%= form.label :description %>:</strong>
     <%= form.text_field :description, id: :expense_description %>
   </div>
 
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, id: :expense_user_id %>
+  <div class="form-group">
+    <strong><%= form.label :user_id, 'Who Paid:' %></strong>
+    <%= form.collection_select :user_id, @users, :id, :full_name, prompt: false %>
   </div>
 
-  <div class="field">
-    <%= form.label :group_id %>
-    <%= form.text_field :group_id, id: :expense_group_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :category %>
+  <div class="form-group">
+    <strong><%= form.label :category %>:</strong>
     <%= form.text_field :category, id: :expense_category %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.hidden_field :group_id %>
+    <%= form.submit :class => 'btn btn-success'%>
   </div>
+</div>
 <% end %>

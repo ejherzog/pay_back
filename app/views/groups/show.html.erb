@@ -1,9 +1,38 @@
-<p id="notice"><%= notice %></p>
+<div class="text-center">
+  <h4 id="notice"><%= notice %></h4>
+</div>
 
-<p>
-  <strong>Name:</strong>
-  <%= @group.name %>
-</p>
+  <div><h1 class="text-center p-3"><%= @group.name %></h1></div>
+  <div class="row">
+    <div class="col-lg-3">
+      <h3 class="text-center">Users</h3>
+      <% if @members.blank? %>
+        <p class="text-center">This group has no members.</p>
+      <% else %>
+        <ul class="list-group">
+          <% @members.each do |member| %>
+            <li class="list-group-item"><%= link_to member.full_name, member %></li>
+          <% end %>
+        </ul>
+      <% end %>
+      <div class="text-center p-3">
+        <%= link_to 'Add A User', users_path, :class => 'btn btn-primary m-1' %>
+        <%= link_to 'Add An Expense', { controller: 'expenses', group_id: @group.id, action: 'new'}, method: :get, :class => 'btn btn-primary m-1' %>
+      </div>
+    </div>
 
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+    <div class="col-lg-8 offset-lg-1">
+      <h3 class="text-center">Expenses</h3>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Expense</th>
+            <th>Total</th>
+            <th>Group</th>
+            <th>Date</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>

@@ -5,8 +5,11 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
 
-  resources :expenses
   resources :users
   resources :groups
+  resources :expenses, except: :new
+
+  get '/expenses/new/:group_id', to: 'expenses#new'
+  post '/groups/:id/add_user(/:user_id)', to: 'groups#add_user'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
