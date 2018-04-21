@@ -11,19 +11,21 @@
     </div>
   <% end %>
 <div class="col-lg-6 offset-lg-3">
-  <div class="form-group text-center">
-    <strong><%= form.label :date %>:</strong>
-    <%= form.date_select :expense_date, {:order => [:month, :day, :year]}, {:class => 'input-md'} %>
-  </div>
 
   <div class="form-group">
     <strong><%= form.label :description %>:</strong>
-    <%= form.text_field :description, id: :expense_description, :class => 'form-control' %>
+    <%= form.text_field :description, id: :expense_description, class: 'form-control' %>
   </div>
 
   <div class="form-group">
     <strong><%= form.label :total %>:</strong>
-    <%= form.number_field :total, id: :expense_total, :value => (number_to_currency(form.object.total, :precision => 2)) %>
+    <%= form.number_field :expense_total, min: 0, step: 0.01, placeholder: 0.00, class: 'form-control' %>
+  </div>
+
+    <div class="form-group">
+    <strong><%= form.label :date %>:</strong>
+    <br>
+    <%= form.date_select :expense_date, {:order => [:month, :day, :year]} %>
   </div>
 
   <div class="form-group">

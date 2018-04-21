@@ -16,7 +16,6 @@ class ExpensesController < ApplicationController
   def new
     return unless params[:group_id]
     @group = Group.find(params[:group_id])
-    @users = @group.users
     @categories = [
       ['Food & Drink', 'Food & Drink'],
       ['Home', 'Home'],

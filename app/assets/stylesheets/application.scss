@@ -4,4 +4,8 @@ $theme-colors: (
 
 $body-bg: #F5F5F5;
 
+input, option {
+    text-align: right;
+}
+
 @import "bootstrap";
