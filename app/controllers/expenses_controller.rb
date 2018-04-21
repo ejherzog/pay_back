@@ -17,6 +17,14 @@ class ExpensesController < ApplicationController
     return unless params[:group_id]
     @group = Group.find(params[:group_id])
     @users = @group.users
+    @categories = [
+      ['Food & Drink', 'Food & Drink'],
+      ['Home', 'Home'],
+      ['Transportation', 'Transportation'],
+      ['Utilities', 'Utilities'],
+      ['Entertainment', 'Entertainment'],
+      ['Other', 'Other']
+    ]
     @expense = Expense.new(group_id: @group.id)
   end
 

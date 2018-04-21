@@ -13,7 +13,12 @@
 <div class="col-lg-6 offset-lg-3">
   <div class="form-group text-center">
     <strong><%= form.label :date %>:</strong>
-    <%= form.date_select :date, id: :expense_date %>
+    <%= form.date_select :expense_date, {:order => [:month, :day, :year]}, {:class => 'input-md'} %>
+  </div>
+
+  <div class="form-group">
+    <strong><%= form.label :description %>:</strong>
+    <%= form.text_field :description, id: :expense_description, :class => 'form-control' %>
   </div>
 
   <div class="form-group">
@@ -22,21 +27,16 @@
   </div>
 
   <div class="form-group">
-    <strong><%= form.label :description %>:</strong>
-    <%= form.text_field :description, id: :expense_description %>
-  </div>
-
-  <div class="form-group">
     <strong><%= form.label :user_id, 'Who Paid:' %></strong>
-    <%= form.collection_select :user_id, @users, :id, :full_name, prompt: false %>
+    <%= form.collection_select :user_id, @users, :id, :full_name, {prompt: false}, {class: "form-control"}%>
   </div>
 
   <div class="form-group">
     <strong><%= form.label :category %>:</strong>
-    <%= form.text_field :category, id: :expense_category %>
+    <%= form.select :category, options_for_select(@categories), {prompt: false}, {class: "form-control"}%>
   </div>
 
-  <div class="form-group">
+  <div class="form-group text-center">
     <%= form.hidden_field :group_id %>
     <%= form.submit :class => 'btn btn-success'%>
   </div>
