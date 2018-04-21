@@ -11,7 +11,7 @@
         <% @groups.each do |group| %>
           <tr>
             <td><%= link_to group.name, group %></td>
-            <% if member?(group) %>
+            <% if current_is_member?(group) %>
               <td class="text-center">Already A Member</td>
             <% else %>
               <td class="text-center"><%= link_to 'Join Group', { controller: 'groups', id: group.id, action: 'add_user'}, method: :post%></td>

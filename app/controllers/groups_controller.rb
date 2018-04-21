@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:add_user, :show, :edit, :update, :destroy]
+  before_action :set_group, only: [:add_users, :add_user, :show, :edit, :update, :destroy]
 
   # GET /groups
   # GET /groups.json
@@ -7,17 +7,24 @@ class GroupsController < ApplicationController
     @groups = Group.all
   end
 
-  # POST /groups/1
-  # POST /groups/1.json
+  # GET /groups/1/add_user
+  # GET /groups/1/add_user.json
+  def add_users
+    @users = User.all
+  end
+
+  # POST /groups/1/add_user(/1)
+  # POST /groups/1/add_user(/1).json
   def add_user
     @user = if params[:user_id]
               User.find(params[:user_id])
             else
               current_user
             end
+    @name = params[:user_id] ? @user.full_name : 'You'
     @group.add_user(@user)
     respond_to do |format|
-      format.html { redirect_to @group, notice: 'You successfully joined this group.' }
+      format.html { redirect_to @group, notice: "#{@name} successfully joined this group." }
       format.json { head :no_content }
     end
   end

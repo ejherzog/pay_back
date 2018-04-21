@@ -1,21 +1,42 @@
-<div class="text-center p-3">
+<div class="text-center">
   <h4 id="notice"><%= notice %></h4>
 </div>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
+<div><h1 class="text-center p-3"><%= @user.full_name %></h1></div>
+  <div class="row">
+    <div class="col-lg-3">
+      <h3 class="text-center">Groups</h3>
+      <% if @groups.blank? %>
+        <p class="text-center"><%= @user.first_name %> hasn't joined any groups yet.</p>
+      <% else %>
+        <ul class="list-group">
+          <% @groups.each do |group| %>
+            <li class="list-group-item"><%= link_to group.name, group %></li>
+          <% end %>
+        </ul>
+      <% end %>
+       <br>
+      <h6 class="text-center"><%= @user.email %></h6>
 
-<p>
-  <strong>First name:</strong>
-  <%= @user.first_name %>
-</p>
+    </div>
+    <div class="col-lg-8 offset-lg-1">
+               <h3 class="text-center">Expenses</h3>
+      <% if @expenses.blank? %>
+        <p class="text-center"><%= @user.first_name %> doesn't have any expenses yet.</p>
+      <% else %>
 
-<p>
-  <strong>Last name:</strong>
-  <%= @user.last_name %>
-</p>
+     <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Expense</th>
+            <th>Total</th>
+            <th>Group</th>
+            <th>Date</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+      </table>
+      <% end %>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+    </div>
+  </div>
