@@ -16,8 +16,13 @@
         </ul>
       <% end %>
       <div class="text-center p-3">
-        <%= link_to 'Add A User', { controller: 'groups', id: @group.id, action: 'add_users'}, :class => 'btn btn-primary m-1' %>
-        <%= link_to 'Add An Expense', { controller: 'expenses', group_id: @group.id, action: 'new'}, method: :get, :class => 'btn btn-primary m-1' %>
+        <% if current_is_member?(@group) %>
+          <%= link_to 'Add A User', { controller: 'groups', id: @group.id, action: 'add_users'}, :class => 'btn btn-primary m-1' %>
+        <%= link_to 'Edit Group', edit_group_path, :class => 'btn btn-primary m-1' %>
+        <% else %>
+        <%= link_to 'Join This Group', { controller: 'groups', id: @group.id, action: 'add_user'}, method: :post, :class => 'btn btn-primary m-1' %>
+
+        <% end %>
       </div>
     </div>
 
@@ -34,5 +39,10 @@
           </tr>
         </thead>
       </table>
+      <% if current_is_member?(@group) %>
+      <div class="text-right">
+        <%= link_to 'Add New Expense', { controller: 'expenses', group_id: @group.id, action: 'new'}, method: :get, :class => 'btn btn-primary m-1' %>
+      </div>
+      <% end %>
     </div>
   </div>

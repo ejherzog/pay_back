@@ -7,7 +7,11 @@
     <div class="col-lg-3">
       <h3 class="text-center">Groups</h3>
       <% if @groups.blank? %>
-        <p class="text-center"><%= @user.first_name %> hasn't joined any groups yet.</p>
+        <% if @user == current_user %>
+          <p class="text-center">You haven't joined any groups yet.</p>
+        <% else %>
+          <p class="text-center"><%= @user.first_name %> hasn't joined any groups yet.</p>
+        <% end %>
       <% else %>
         <ul class="list-group">
           <% @groups.each do |group| %>
@@ -15,14 +19,22 @@
           <% end %>
         </ul>
       <% end %>
+      <div class="text-center">
        <br>
-      <h6 class="text-center"><%= @user.email %></h6>
-
+      <p class="text-center"><%= @user.email %></p>
+      <% if @user == current_user %>
+        <%= link_to 'Edit Profile', edit_user_path %>
+      <% end %>
+</div>
     </div>
     <div class="col-lg-8 offset-lg-1">
                <h3 class="text-center">Expenses</h3>
       <% if @expenses.blank? %>
-        <p class="text-center"><%= @user.first_name %> doesn't have any expenses yet.</p>
+        <% if @user == current_user %>
+          <p class="text-center">You don't have any expenses yet.</p>
+        <% else %>
+          <p class="text-center"><%= @user.first_name %> doesn't have any expenses yet.</p>
+        <% end %>
       <% else %>
 
      <table class="table table-hover">
