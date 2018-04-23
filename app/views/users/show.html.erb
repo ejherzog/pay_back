@@ -40,15 +40,24 @@
      <table class="table table-hover">
         <thead>
           <tr>
-            <th>Expense</th>
-            <th>Total</th>
-            <th>Group</th>
-            <th>Date</th>
-            <th>Category</th>
+            <th class="text-center">Expense</th>
+            <th class="text-center">Date</th>
+            <th class="text-center">Category</th>
+            <th class="text-center">Total</th>
           </tr>
         </thead>
+        <tbody>
+          <% @expenses.each do |expense| %>
+            <tr>
+              <td class="text-center"><%= link_to expense.description, expense %></td>
+              <td class="text-center"><%= expense.date.strftime("%B %d, %Y") %></td>
+              <td class="text-center"><%= expense.category %></td>
+              <td class="text-right"><%= number_to_currency(expense.total) %></td>
+            </tr>
+          <% end %>
+        </tbody>
       </table>
-      <% end %>
 
+      <% end %>
     </div>
   </div>

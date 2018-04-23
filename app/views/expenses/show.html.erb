@@ -1,36 +1,58 @@
-<div class="text-center p-3">
+<div class="text-center">
   <h4 id="notice"><%= notice %></h4>
 </div>
 
-<p>
-  <strong>Date:</strong>
-  <%= @expense.date %>
-</p>
+<div><h1 class="text-center p-3"><%= @expense.description %>: <%= number_to_currency(@expense.total) %></h1></div>
+<div class="row">
+  <div class="col-lg-4 offset-lg-4 text-center">
+    <h3>
+      Date: <%= @expense.date.strftime("%B %d, %Y") %>
+    </h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-3">
+    <h3 class="text-center">Details</h3>
+    <ul class="list-group">
+      <li class="list-group-item"><strong>Who Paid: </strong><%= link_to @who_paid.full_name, @who_paid %></li>
+      <li class="list-group-item"><strong>Group: </strong><%= link_to @group.name, @group %></li>
+      <li class="list-group-item"><strong>Category: </strong><%= @expense.category %></li>
+    </ul>
+</div>
 
-<p>
-  <strong>Total:</strong>
-  <%= @expense.total %>
-</p>
+<div class="col-lg-8 offset-lg-1">
+               <h3 class="text-center">Users</h3>
+      <% if @payers.blank? %>
+          <p class="text-center">There are no users for this expense.</p>
+      <% else %>
 
-<p>
-  <strong>Description:</strong>
-  <%= @expense.description %>
-</p>
+     <table class="table table-hover">
+        <thead>
+          <tr>
+            <th class="text-center">User</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Amount</th>
+            <th class="text-center">Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @payers.each do |user| %>
+          <tr>
+            <td class="text-center vert-aligned"><%= link_to user.full_name, user %></td>
+            <% if user.paid == 't' %>
+              <td class="text-center text-paid vert-aligned">Paid</td>
+              <td class="text-right text-paid vert-aligned"><%= number_to_currency(@per_person) %></td>
+              <td class="text-center"><%= link_to 'Mark Unpaid', nil, :class => 'btn btn-unpaid disabled' %></td>
+            <% else %>
+              <td class="text-center text-unpaid vert-aligned">Unpaid</td>
+              <td class="text-right text-unpaid vert-aligned"><%= number_to_currency(@per_person) %></td>
+              <td class="text-center"><%= link_to 'Mark Paid', nil, :class => 'btn btn-paid disabled' %></td>
+            <% end %>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <% end %>
 
-<p>
-  <strong>User:</strong>
-  <%= @expense.user %>
-</p>
-
-<p>
-  <strong>Group:</strong>
-  <%= @expense.group %>
-</p>
-
-<p>
-  <strong>Category:</strong>
-  <%= @expense.category %>
-</p>
-
-<%= link_to 'Edit', edit_expense_path(@expense) %> |
-<%= link_to 'Back', expenses_path %>
+    </div>
+  </div>

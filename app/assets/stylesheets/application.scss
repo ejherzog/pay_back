@@ -1,6 +1,12 @@
 $theme-colors: (
-  "primary": #006400
+  "primary": #006400,
+  "paid": #1926E0,
+  "unpaid": #D41313
 );
+
+.table tbody > tr > td.vert-aligned {
+    vertical-align: middle;
+}
 
 $body-bg: #F5F5F5;
 

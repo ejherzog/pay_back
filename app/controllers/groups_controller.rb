@@ -33,6 +33,7 @@ class GroupsController < ApplicationController
   # GET /groups/1.json
   def show
     @members = @group.users
+    @expenses = @group.expenses
   end
 
   # GET /groups/new

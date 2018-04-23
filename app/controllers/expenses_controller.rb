@@ -7,15 +7,11 @@ class ExpensesController < ApplicationController
     @expenses = Expense.all
   end
 
-  # GET /expenses/1
-  # GET /expenses/1.json
-  def show
-  end
-
   # GET /expenses/new
   def new
     return unless params[:group_id]
     @group = Group.find(params[:group_id])
+    @users = @group.users
     @categories = [
       ['Food & Drink', 'Food & Drink'],
       ['Home', 'Home'],
@@ -38,6 +34,13 @@ class ExpensesController < ApplicationController
 
     respond_to do |format|
       if @expense.save
+        @group = Group.find(@expense.group_id)
+        @group.users.each do |user|
+          @paid = user.id == @expense.user_id
+          @payment = Payment.new(expense: @expense, user: user, paid: @paid)
+          @payment.save
+        end
+
         format.html { redirect_to @expense, notice: 'Expense was successfully created.' }
         format.json { render :show, status: :created, location: @expense }
       else
@@ -69,6 +72,18 @@ class ExpensesController < ApplicationController
       format.html { redirect_to expenses_url, notice: 'Expense was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # GET /expenses/1
+  # GET /expenses/1.json
+  def show
+    @who_paid = User.find(@expense.user_id)
+    @group = Group.find(@expense.group_id)
+    @payers = @expense.users.select('users.*, payments.paid as paid')
+    @payers.each do |p|
+      print(p.full_name, p.paid, "\n")
+    end
+    @per_person = @expense.total.to_f / @group.users.length
   end
 
   private
