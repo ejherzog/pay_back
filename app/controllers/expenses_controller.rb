@@ -1,5 +1,5 @@
 class ExpensesController < ApplicationController
-  before_action :set_expense, only: [:show, :edit, :update, :destroy]
+  before_action :set_expense, only: [:mark_paid, :show, :edit, :update, :destroy]
 
   # GET /expenses
   # GET /expenses.json
@@ -71,6 +71,22 @@ class ExpensesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to expenses_url, notice: 'Expense was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  # POST /expenses/1/mark_paid/1
+  # POST /expenses/1/mark_paid/1.json
+  def mark_paid
+    @payment = Payment.where(user_id: params[:user_id], expense_id: params[:id]).first
+    @payment.toggle!(:paid)
+    respond_to do |format|
+      if @payment.save
+        format.html { redirect_to @expense, notice: 'Payment records were successfully updated.' }
+        format.json { render :show, status: :ok, location: @expense }
+      else
+        format.html { redirect_to @expense, notice: 'An error occurred processing your request.' }
+        format.json { render json: @expense.errors, status: :unprocessable_entity }
+      end
     end
   end
 
