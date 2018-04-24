@@ -5,7 +5,13 @@
 <div><h1 class="text-center p-3"><%= @user.full_name %></h1></div>
   <div class="row">
     <div class="col-lg-3">
-      <h3 class="text-center">Groups</h3>
+      <h3 class="text-center">
+        <% if @user == current_user %>
+          Your Groups
+        <% else %>
+          Groups
+        <% end %>
+      </h3>
       <% if @groups.blank? %>
         <% if @user == current_user %>
           <p class="text-center">You haven't joined any groups yet.</p>
@@ -28,7 +34,13 @@
 </div>
     </div>
     <div class="col-lg-9">
-               <h3 class="text-center">Expenses</h3>
+    <h3 class="text-center">
+      <% if @user == current_user %>
+        Your Expenses
+      <% else %>
+        Shared Expenses
+      <% end %>
+    </h3>
       <% if @expenses.blank? %>
         <% if @user == current_user %>
           <p class="text-center">You don't have any expenses yet.</p>
@@ -49,15 +61,17 @@
         </thead>
         <tbody>
           <% @expenses.each do |expense| %>
+            <% @group = group(expense.group_id) %>
+            <% if current_is_member?(@group) %>
               <tr>
                 <td class="text-center"><%= link_to truncate(expense.description, :length => 25, :separator => ' '), expense %></td>
-                <% @group = group(expense.group_id) %>
                 <td class="text-center"><%= link_to @group.name, @group%></td>
                 <td class="text-center"><%= expense.date.strftime("%B %d, %Y") %></td>
                 <td class="text-center"><%= expense.category %></td>
                 <td class="text-right"><%= number_to_currency(expense.total) %></td>
               </tr>
-            <% end %>
+              <% end %>
+          <% end %>
         </tbody>
       </table>
 

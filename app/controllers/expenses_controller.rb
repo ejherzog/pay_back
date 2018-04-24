@@ -1,16 +1,11 @@
 class ExpensesController < ApplicationController
   before_action :set_expense, only: [:mark_paid, :show, :edit, :update, :destroy]
 
-  # GET /expenses
-  # GET /expenses.json
-  def index
-    @expenses = Expense.all
-  end
-
   # GET /expenses/new
   def new
     return unless params[:group_id]
     @group = Group.find(params[:group_id])
+    redirect_to root_path unless current_is_member?(@group)
     @users = @group.users
     @categories = [
       ['Food & Drink', 'Food & Drink'],
@@ -25,6 +20,18 @@ class ExpensesController < ApplicationController
 
   # GET /expenses/1/edit
   def edit
+    return unless params[:group_id]
+    @group = Group.find(params[:group_id])
+    redirect_to root_path unless current_is_member?(@group)
+    @users = @group.users
+    @categories = [
+      ['Food & Drink', 'Food & Drink'],
+      ['Home', 'Home'],
+      ['Transportation', 'Transportation'],
+      ['Utilities', 'Utilities'],
+      ['Entertainment', 'Entertainment'],
+      ['Other', 'Other']
+    ]
   end
 
   # POST /expenses
@@ -69,7 +76,7 @@ class ExpensesController < ApplicationController
   def destroy
     @expense.destroy
     respond_to do |format|
-      format.html { redirect_to expenses_url, notice: 'Expense was successfully destroyed.' }
+      format.html { redirect_to root_path, notice: 'Expense was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -77,41 +84,41 @@ class ExpensesController < ApplicationController
   # POST /expenses/1/mark_paid/1
   # POST /expenses/1/mark_paid/1.json
   def mark_paid
-    @payment = Payment.where(user_id: params[:user_id], expense_id: params[:id]).first
-
+    @payment = Payment.where(
+      user_id: params[:user_id],
+      expense_id: params[:id]
+    ).first
     @payment.update(paid: !@payment.paid)
     redirect_back fallback_location: @expense
-
-
-    # @payment.toggle!(:paid)
-    # respond_to do |format|
-    #   if @payment.save
-    #     format.html { redirect_to @expense, notice: 'Payment records were successfully updated.' }
-    #     format.json { render :show, status: :ok, location: @expense }
-    #   else
-    #     format.html { redirect_to @expense, notice: 'An error occurred processing your request.' }
-    #     format.json { render json: @expense.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # GET /expenses/1
   # GET /expenses/1.json
   def show
-    @who_paid = User.find(@expense.user_id)
     @group = Group.find(@expense.group_id)
+    redirect_to root_path unless current_is_member?(@group)
+    @who_paid = User.find(@expense.user_id)
     @payers = @expense.users.select('users.*, payments.paid as paid')
-    @per_person = @expense.total.to_f / @group.users.length
+    @per_person = @expense.total.to_f / @payers.length
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_expense
-      @expense = Expense.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def expense_params
-      params.require(:expense).permit(:date, :total, :description, :user_id, :group_id, :category)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_expense
+    @expense = Expense.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet,
+  # only allow the white list through.
+  def expense_params
+    params.require(:expense).permit(
+      :date,
+      :total,
+      :description,
+      :user_id,
+      :group_id,
+      :category
+    )
+  end
 end

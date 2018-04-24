@@ -18,40 +18,42 @@
       <div class="text-center p-3">
         <% if current_is_member?(@group) %>
           <%= link_to 'Add A User', { controller: 'groups', id: @group.id, action: 'add_users'}, :class => 'btn btn-primary m-1' %>
-        <%= link_to 'Edit Group', edit_group_path, :class => 'btn btn-primary m-1' %>
+          <%= link_to 'Edit Group', edit_group_path, :class => 'btn btn-primary m-1' %>
+          <%= link_to 'Delete Group', group_path, method: :delete, :class => 'btn btn-danger m-1' %>
         <% else %>
-        <%= link_to 'Join This Group', { controller: 'groups', id: @group.id, action: 'add_user'}, method: :post, :class => 'btn btn-primary m-1' %>
-
+          <%= link_to 'Join This Group', { controller: 'groups', id: @group.id, action: 'add_user'}, method: :post, :class => 'btn btn-primary m-1' %>
         <% end %>
       </div>
     </div>
 
     <div class="col-lg-9">
       <h3 class="text-center">Expenses</h3>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th class="text-center">Expense</th>
-            <th class="text-center">Date</th>
-            <th class="text-center">Category</th>
-            <th class="text-center">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @expenses.each do |expense| %>
-            <tr>
-              <td class="text-center"><%= link_to truncate(expense.description, :length => 35, :separator => ' '), expense %></td>
-              <td class="text-center"><%= expense.date.strftime("%B %d, %Y") %></td>
-              <td class="text-center"><%= expense.category %></td>
-              <td class="text-right"><%= number_to_currency(expense.total) %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
       <% if current_is_member?(@group) %>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Expense</th>
+              <th class="text-center">Date</th>
+              <th class="text-center">Category</th>
+              <th class="text-center">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @expenses.each do |expense| %>
+              <tr>
+                <td class="text-center"><%= link_to truncate(expense.description, :length => 35, :separator => ' '), expense %></td>
+                <td class="text-center"><%= expense.date.strftime("%B %d, %Y") %></td>
+                <td class="text-center"><%= expense.category %></td>
+                <td class="text-right"><%= number_to_currency(expense.total) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       <div class="text-right">
         <%= link_to 'Add New Expense', { controller: 'expenses', group_id: @group.id, action: 'new'}, method: :get, :class => 'btn btn-primary m-1' %>
       </div>
+      <% else %>
+        <p class="text-center">You must join this group to see its expenses.</p>
       <% end %>
     </div>
   </div>

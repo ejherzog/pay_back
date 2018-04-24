@@ -10,6 +10,7 @@ class GroupsController < ApplicationController
   # GET /groups/1/add_user
   # GET /groups/1/add_user.json
   def add_users
+    redirect_to root_path unless current_is_member?(@group)
     @users = User.all
   end
 
@@ -33,7 +34,7 @@ class GroupsController < ApplicationController
   # GET /groups/1.json
   def show
     @members = @group.users
-    @expenses = @group.expenses
+    @expenses = @group.expenses if current_is_member?(@group)
   end
 
   # GET /groups/new
@@ -43,6 +44,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
+    redirect_to root_path unless current_is_member?(@group)
     @members = @group.users
   end
 
@@ -81,7 +83,7 @@ class GroupsController < ApplicationController
   def destroy
     @group.destroy
     respond_to do |format|
-      format.html { redirect_to groups_url, notice: "#{@group.name} was successfully deleted." }
+      format.html { redirect_to root_path, notice: "#{@group.name} was successfully deleted." }
       format.json { head :no_content }
     end
   end

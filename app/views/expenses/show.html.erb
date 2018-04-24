@@ -18,6 +18,10 @@
       <li class="list-group-item"><strong>Group: </strong><%= link_to @group.name, @group %></li>
       <li class="list-group-item"><strong>Category: </strong><%= @expense.category %></li>
     </ul>
+    <div class="text-center p-3">
+      <%= link_to 'Add New Expense', { controller: 'expenses', group_id: @group.id, action: 'new'}, method: :get, :class => 'btn btn-primary m-1' %>
+      <%= link_to 'Delete Expense', expense_path, method: :delete, :class => 'btn btn-danger m-1' %>
+    </div>
 </div>
 
 <div class="col-lg-8 offset-lg-1">

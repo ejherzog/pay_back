@@ -15,6 +15,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    redirect_to root_path unless @user == current_user
   end
 
   # POST /users
@@ -45,17 +46,6 @@ class UsersController < ApplicationController
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy
-    session.destroy
-    respond_to do |format|
-      format.html { redirect_to root, notice: 'Your account was successfully deleted.' }
-      format.json { head :no_content }
     end
   end
 
