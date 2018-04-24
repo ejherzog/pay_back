@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  helper_method :logged_in?, :current_user, :current_is_member?, :user_is_member?
+  helper_method :group, :logged_in?, :current_user, :current_is_member?, :user_is_member?
 
   def logged_in?
     session[:user_id]
@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
 
   def user_is_member?(user, group)
     user.groups.include?(group)
+  end
+
+  def group(group_id)
+    Group.find(group_id)
   end
 
   def authenticate_user

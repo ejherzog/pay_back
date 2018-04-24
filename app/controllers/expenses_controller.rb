@@ -80,9 +80,6 @@ class ExpensesController < ApplicationController
     @who_paid = User.find(@expense.user_id)
     @group = Group.find(@expense.group_id)
     @payers = @expense.users.select('users.*, payments.paid as paid')
-    @payers.each do |p|
-      print(p.full_name, p.paid, "\n")
-    end
     @per_person = @expense.total.to_f / @group.users.length
   end
 
