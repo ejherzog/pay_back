@@ -42,7 +42,9 @@
             <% if user.paid %>
               <td class="text-center text-paid vert-aligned">Paid</td>
               <td class="text-right text-paid vert-aligned"><%= number_to_currency(@per_person) %></td>
-              <td class="text-center"><%= link_to 'Mark Unpaid', { controller: 'expenses', id: @expense.id, user_id: user.id, action: 'mark_paid'}, method: :post, :class => 'btn btn-unpaid' %></td>
+              <% unless user.id == @expense.user_id %>
+                <td class="text-center"><%= link_to 'Mark Unpaid', { controller: 'expenses', id: @expense.id, user_id: user.id, action: 'mark_paid'}, method: :post, :class => 'btn btn-unpaid' %></td>
+              <% end %>
             <% else %>
               <td class="text-center text-unpaid vert-aligned">Unpaid</td>
               <td class="text-right text-unpaid vert-aligned"><%= number_to_currency(@per_person) %></td>
