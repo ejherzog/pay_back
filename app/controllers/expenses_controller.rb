@@ -78,16 +78,21 @@ class ExpensesController < ApplicationController
   # POST /expenses/1/mark_paid/1.json
   def mark_paid
     @payment = Payment.where(user_id: params[:user_id], expense_id: params[:id]).first
-    @payment.toggle!(:paid)
-    respond_to do |format|
-      if @payment.save
-        format.html { redirect_to @expense, notice: 'Payment records were successfully updated.' }
-        format.json { render :show, status: :ok, location: @expense }
-      else
-        format.html { redirect_to @expense, notice: 'An error occurred processing your request.' }
-        format.json { render json: @expense.errors, status: :unprocessable_entity }
-      end
-    end
+
+    @payment.update(paid: !@payment.paid)
+    redirect_back fallback_location: @expense
+
+
+    # @payment.toggle!(:paid)
+    # respond_to do |format|
+    #   if @payment.save
+    #     format.html { redirect_to @expense, notice: 'Payment records were successfully updated.' }
+    #     format.json { render :show, status: :ok, location: @expense }
+    #   else
+    #     format.html { redirect_to @expense, notice: 'An error occurred processing your request.' }
+    #     format.json { render json: @expense.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # GET /expenses/1

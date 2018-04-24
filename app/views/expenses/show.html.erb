@@ -39,7 +39,7 @@
           <% @payers.each do |user| %>
           <tr>
             <td class="text-center vert-aligned"><%= link_to user.full_name, user %></td>
-            <% if user.paid == 't' %>
+            <% if user.paid %>
               <td class="text-center text-paid vert-aligned">Paid</td>
               <td class="text-right text-paid vert-aligned"><%= number_to_currency(@per_person) %></td>
               <td class="text-center"><%= link_to 'Mark Unpaid', { controller: 'expenses', id: @expense.id, user_id: user.id, action: 'mark_paid'}, method: :post, :class => 'btn btn-unpaid' %></td>
