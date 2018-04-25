@@ -7,14 +7,7 @@ class ExpensesController < ApplicationController
     @group = Group.find(params[:group_id])
     redirect_to root_path unless current_is_member?(@group)
     @users = @group.users
-    @categories = [
-      ['Food & Drink', 'Food & Drink'],
-      ['Home', 'Home'],
-      ['Transportation', 'Transportation'],
-      ['Utilities', 'Utilities'],
-      ['Entertainment', 'Entertainment'],
-      ['Other', 'Other']
-    ]
+    set_categories
     @expense = Expense.new(group_id: @group.id)
   end
 
@@ -24,37 +17,14 @@ class ExpensesController < ApplicationController
     @group = Group.find(params[:group_id])
     redirect_to root_path unless current_is_member?(@group)
     @users = @group.users
-    @categories = [
-      ['Food & Drink', 'Food & Drink'],
-      ['Home', 'Home'],
-      ['Transportation', 'Transportation'],
-      ['Utilities', 'Utilities'],
-      ['Entertainment', 'Entertainment'],
-      ['Other', 'Other']
-    ]
+    set_categories
   end
 
   # POST /expenses
   # POST /expenses.json
   def create
     @expense = Expense.new(expense_params)
-
-    respond_to do |format|
-      if @expense.save
-        @group = Group.find(@expense.group_id)
-        @group.users.each do |user|
-          @paid = user.id == @expense.user_id
-          @payment = Payment.new(expense: @expense, user: user, paid: @paid)
-          @payment.save
-        end
-
-        format.html { redirect_to @expense, notice: 'Expense was successfully created.' }
-        format.json { render :show, status: :created, location: @expense }
-      else
-        format.html { render controller: 'expenses', action: 'new', group_id: expense_params[:group_id] }
-        format.json { render json: @expense.errors, status: :unprocessable_entity }
-      end
-    end
+    create_redirect(@expense)
   end
 
   # PATCH/PUT /expenses/1
@@ -120,5 +90,38 @@ class ExpensesController < ApplicationController
       :group_id,
       :category
     )
+  end
+
+  def set_categories
+    @categories = [
+      ['Food & Drink', 'Food & Drink'],
+      ['Home', 'Home'],
+      ['Transportation', 'Transportation'],
+      ['Utilities', 'Utilities'],
+      ['Entertainment', 'Entertainment'],
+      ['Other', 'Other']
+    ]
+  end
+
+  def create_payments(expense)
+    @group = Group.find(expense.group_id)
+    @group.users.each do |user|
+      @paid = user.id == expense.user_id
+      @payment = Payment.new(expense: expense, user: user, paid: @paid)
+      @payment.save
+    end
+  end
+
+  def create_redirect(expense)
+    respond_to do |format|
+      if expense.save
+        create_payments(expense)
+        format.html { redirect_to expense, notice: 'Expense was successfully created.' }
+        format.json { render :show, status: :created, location: expense }
+      else
+        format.html { render controller: 'expenses', action: 'new', group_id: expense_params[:group_id] }
+        format.json { render json: expense.errors, status: :unprocessable_entity }
+      end
+    end
   end
 end

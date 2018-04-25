@@ -17,11 +17,7 @@ class GroupsController < ApplicationController
   # POST /groups/1/add_user(/1)
   # POST /groups/1/add_user(/1).json
   def add_user
-    @user = if params[:user_id]
-              User.find(params[:user_id])
-            else
-              current_user
-            end
+    @user = params[:user_id] ? User.find(params[:user_id]) : current_user
     @name = params[:user_id] ? @user.full_name + ' has' : 'You have'
     @group.add_user(@user)
     respond_to do |format|
@@ -89,13 +85,14 @@ class GroupsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_group
-      @group = Group.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def group_params
-      params.require(:group).permit(:name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_group
+    @group = Group.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def group_params
+    params.require(:group).permit(:name)
+  end
 end
